@@ -11,15 +11,28 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
-const LINE =
+// The joke, in three beats:
+//   setup  — a dad tells his son the tooth fairy is real, an everyday white
+//             lie every parent recognises;
+//   turn   — the boy takes it literally, like a tiny accountant, and bills
+//             his dad for every tooth;
+//   kicker — "plus late fees": the invoice is not just absurd, it has terms.
+// One sentence, nothing to explain.
+const ENTRY_LINE =
   "I told my son the tooth fairy was real, and now he sends me an invoice for every tooth, plus late fees.";
 
-// The grader reads /output/entry.txt. Honour an override when one is set so
-// the program can be tried out locally without touching the real output dir.
-const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
-const outFile = join(outDir, "entry.txt");
+function writeEntry(line: string): string {
+  // The grader reads /output/entry.txt. Honour an override when one is set
+  // so the program can be tried out locally without touching the real
+  // output dir.
+  const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+  const outFile = join(outDir, "entry.txt");
 
-mkdirSync(dirname(outFile), { recursive: true });
-writeFileSync(outFile, LINE, "utf8");
+  mkdirSync(dirname(outFile), { recursive: true });
+  writeFileSync(outFile, line, "utf8");
+  return outFile;
+}
 
-console.log(`Wrote ${LINE.length} characters to ${outFile}`);
+const outFile = writeEntry(ENTRY_LINE);
+
+console.log(`Wrote ${ENTRY_LINE.length} characters to ${outFile}`);
